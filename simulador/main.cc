@@ -1,9 +1,3 @@
-/**********************************************************************************************
- *
- * Ejemplo de implementación de fila G/G/1/inf
- *
- **********************************************************************************************/
-
 #include "FilaGG1.hh"
 #include "Random.hh"
 #include "include/checkArgs.hpp"
@@ -12,13 +6,6 @@
 FilaGG1 *EventSimConnector::theSim;
 bool Event::enableLog;
 bool Simulator::enableLog;
-
-// // trabajosEnEspera
-// uint32_t FilaGG1::trabajosEnEspera = 0;
-// // totalAbandonos
-// uint32_t FilaGG1::totalAbandonos = 0;
-// // totalAtendidos
-// uint32_t FilaGG1::totalAtendidos = 0;
 
 int main(int argc, char *argv[])
 {
@@ -34,12 +21,12 @@ int main(int argc, char *argv[])
 	// Contador de la fila
 	std::cout << "Fila de atención simple\n";
 
-	//
+	// Habilitar logs
 	Simulator::enableLog = args.getArgs().enableSimulatorLogs;
 	Event::enableLog = args.getArgs().enableEventsLogs;
 
 	// Crear la simulación
-	FilaGG1 *GG1Sim = new FilaGG1();
+	FilaGG1 *GG1Sim = new FilaGG1(argc, argv);
 	EventSimConnector::theSim = GG1Sim;
 
 	// Tiempo de simulación
@@ -48,16 +35,11 @@ int main(int argc, char *argv[])
 	// Tiempo de reschedule
 	GG1Sim->rescheduleTime = 1000.0;
 
-	// Obtener los argumentos de la simulación
-
-	// espaciosDisponibles
-	uint32_t espaciosDisponibles = args.getArgs().espaciosDisponibles;
-
 	// Tiempo de llegada
 	double tArrival = 0.0;
 
 	// Generar los eventos de llegada
-	for (size_t id = 0; id < args.getArgs().cantidadDeTrabajo; id += 1)
+	for (size_t id = 0; id < 1000; id += 1)
 	{
 		// Log de eventos
 		std::stringstream ssEvLog;

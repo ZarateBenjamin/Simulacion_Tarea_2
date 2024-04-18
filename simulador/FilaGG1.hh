@@ -2,13 +2,22 @@
 
 #include "Simulator.hh"
 #include "Random.hh"
+#include "include/checkArgs.hpp"
 
 class FilaGG1 : public Simulator
 {
 public:
 	bool servidorLibre;
+	// trabajosEnEspera
+	uint32_t trabajosEnEspera;
+	// totalAbandonos
+	uint32_t totalAbandonos;
+	// totalAtendidos
+	uint32_t totalAtendidos;
 
-	FilaGG1();
+	// espaciosDisponibles
+	uint32_t espaciosDisponibles;
+	FilaGG1(int argc, char *argv[]);
 };
 
 class EventSimConnector

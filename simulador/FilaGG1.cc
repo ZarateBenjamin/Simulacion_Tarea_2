@@ -1,18 +1,31 @@
-#include <FilaGG1.hh>
+#include "FilaGG1.hh"
+#include "include/checkArgs.hpp"
 
-//
-
-FilaGG1::FilaGG1() : Simulator(), servidorLibre(true)
+// Implementación del constructor
+FilaGG1::FilaGG1(int argc, char *argv[]) : Simulator()
 {
+	// Procesar argumentos
+	CheckArgs args(argc, argv);
+	servidorLibre = true;
+	trabajosEnEspera = 0;
+	totalAbandonos = 0;
+	totalAtendidos = 0;
+	espaciosDisponibles = args.getArgs().espaciosDisponibles;
 }
 
+// evento de inicio de la simulación
 void Llegada::processEvent()
 {
+
 	std::stringstream ssEvLog;
 
 	ssEvLog << "==> llega  a la fila.\n";
 	this->log(ssEvLog);
 
+	theSim->trabajosEnEspera++;
+	theSim->espaciosDisponibles--;
+
+	// Si el servidor está libre, el trabajo pasa directamente al servidor
 	if (theSim->servidorLibre)
 	{
 		theSim->servidorLibre = false;
@@ -24,12 +37,21 @@ void Llegada::processEvent()
 		ev->itRescheduled = false;
 		theSim->scheduleEvent(ev);
 	}
+	// Si el servidor está ocupado, se debe re-planificar el evento de llegada
 	else
 	{
 		// El evento de llegada debe ser re-planificado.
 		// el nuevo tiempo es 'newTime'
 
-		// (1) determinar el tiempo de postergación
+		if (theSim->espaciosDisponibles <= 0)
+		{
+			theSim->espaciosDisponibles = 0;
+			theSim->totalAbandonos++;
+			ssEvLog << "==> abandona la fila.\n";
+			this->log(ssEvLog);
+		}
+
+		// determinar el tiempo de postergación
 		double newTime;
 		newTime = time + theSim->rescheduleTime;
 
@@ -37,15 +59,15 @@ void Llegada::processEvent()
 		ssEvLog << "==> servidor ocupado, replanificado para t=" << newTime << "\n";
 		this->log(ssEvLog);
 
-		// (2) Se crea un nuevo evento, manteniendo el mismo identificador del
-		//     evento original
+		// Se crea un nuevo evento, manteniendo el mismo identificador del
+		// evento original
 		Event *ev = new Llegada(newTime, id);
 		ev->itRescheduled = true;
 
-		// (3) Se planifica el nuevo evento
+		// Se planifica el nuevo evento
 		theSim->scheduleEvent(ev);
 
-		// (4) El evento actual es eliminado en el ciclo de simulación
+		// Se elimina este evento de la lista de eventos
 	}
 }
 
@@ -54,8 +76,10 @@ void OcuparServidor::processEvent()
 	std::stringstream ssEvLog;
 
 	theSim->servidorLibre = false;
-	// Tiempo que se va a demorar en pasar las compras
-	uint32_t Tservicio = Random::integer(1, 30);
+	theSim->trabajosEnEspera--;
+
+	// Tiempo de servicio del trabajo actual
+	uint32_t Tservicio = Random::exponential(2);
 
 	ssEvLog << "==> empieza a ocupar servidor. Tiempo de servicio:" << Tservicio << "\n";
 	this->log(ssEvLog);
@@ -68,6 +92,8 @@ void Salir::processEvent()
 	std::stringstream ssEvLog;
 
 	theSim->servidorLibre = true;
+	theSim->totalAtendidos++;
+	theSim->espaciosDisponibles++;
 
 	ssEvLog << "==> Fin servicio.\n";
 	this->log(ssEvLog);
