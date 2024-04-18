@@ -94,7 +94,7 @@ void OcuparServidor::processEvent()
 	theSim->tiempoEntradaFila += time - theSim->tiempoEntradaFila;
 
 	// Tiempo de servicio del trabajo actual
-	double Tservicio = Random::exponential(200); // una media de 2 minutos (1/0.5)
+	double Tservicio = Random::exponential(0.5); // una media de 2 minutos (1/0.5)
 
 	// Acumular tiempo de atención
 	theSim->tiempoTotalDeAtencion += Tservicio;
