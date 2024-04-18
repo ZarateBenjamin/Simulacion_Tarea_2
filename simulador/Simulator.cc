@@ -1,4 +1,4 @@
-#include <Simulator.hh>
+#include "Simulator.hh"
 #include <cstdint>
 
 Event::Event(double t) : time(t), id(0), itRescheduled(false)
@@ -25,7 +25,7 @@ void Event::log(std::stringstream &tss)
 	tss.str("");
 }
 
-Simulator::Simulator() : time(0), timeMax(0), eventQueue(), biasDeltaTime(1e-6)
+Simulator::Simulator() : time(0), timeMax(0), biasDeltaTime(1e-6), eventQueue()
 {
 }
 

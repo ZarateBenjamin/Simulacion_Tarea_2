@@ -47,6 +47,7 @@ void Llegada::processEvent()
 		{
 			theSim->espaciosDisponibles = 0;
 			theSim->totalAbandonos++;
+			theSim->trabajosEnEspera--;
 			ssEvLog << "==> abandona la fila.\n";
 			this->log(ssEvLog);
 		}
