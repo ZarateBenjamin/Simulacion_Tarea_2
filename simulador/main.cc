@@ -13,12 +13,12 @@ FilaGG1 *EventSimConnector::theSim;
 bool Event::enableLog;
 bool Simulator::enableLog;
 
-// trabajosEnEspera
-uint32_t FilaGG1::trabajosEnEspera = 0;
-// totalAbandonos
-uint32_t FilaGG1::totalAbandonos = 0;
-// totalAtendidos
-uint32_t FilaGG1::totalAtendidos = 0;
+// // trabajosEnEspera
+// uint32_t FilaGG1::trabajosEnEspera = 0;
+// // totalAbandonos
+// uint32_t FilaGG1::totalAbandonos = 0;
+// // totalAtendidos
+// uint32_t FilaGG1::totalAtendidos = 0;
 
 int main(int argc, char *argv[])
 {
