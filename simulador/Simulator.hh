@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <sstream>
+#include <cstdint>
 
 class Simulator;
 

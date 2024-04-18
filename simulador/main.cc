@@ -45,7 +45,6 @@ int main(int argc, char *argv[])
 		std::stringstream ssEvLog;
 
 		// Generar el tiempo de llegada
-		double tBetweenArrivals;
 		double tBetweenArrivals = Random::normal_truncated(5, 2, 0, 15);
 
 		// Calcular el tiempo de llegada
