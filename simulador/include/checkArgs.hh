@@ -15,6 +15,7 @@ public:
 	typedef struct args_t
 	{
 		uint32_t espaciosDisponibles;
+		uint32_t trabajosAProcesar;
 		bool randomTest;
 		bool enableSimulatorLogs;
 		bool enableEventsLogs;

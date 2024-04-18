@@ -4,12 +4,14 @@ CheckArgs::CheckArgs(int _argc, char **_argv) : argc(_argc), argv(_argv), optStr
 
 {
     parametros.espaciosDisponibles = 0;
+    parametros.trabajosAProcesar = 0;
     parametros.randomTest = false;
     parametros.enableSimulatorLogs = false;
     parametros.enableEventsLogs = false;
 
     static const struct option opts[] = {
         {"espaciosDisponibles", required_argument, nullptr, 'k'},
+        {"trabajosAProcesar", required_argument, nullptr, 'j'},
         {"test", no_argument, nullptr, 't'},
         {"slogs", no_argument, nullptr, 's'},
         {"elogs", no_argument, nullptr, 'e'},
@@ -33,6 +35,9 @@ void CheckArgs::loadArgs()
         {
         case 'k':
             parametros.espaciosDisponibles = std::atof(optarg);
+            break;
+        case 'j':
+            parametros.trabajosAProcesar = std::atof(optarg);
             break;
         case 's':
             parametros.enableSimulatorLogs = true;

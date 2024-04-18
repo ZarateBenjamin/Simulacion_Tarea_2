@@ -22,7 +22,11 @@ int main(int argc, char *argv[])
 	Simulator::enableLog = args.getArgs().enableSimulatorLogs;
 	Event::enableLog = args.getArgs().enableEventsLogs;
 
+	// Espacios disponibles
 	uint32_t espaciosDisponibles = args.getArgs().espaciosDisponibles;
+
+	// Trabajos a procesar
+	uint32_t trabajosAProcesar = args.getArgs().trabajosAProcesar;
 
 	// Crear la simulación
 	FilaGG1 *GG1Sim = new FilaGG1(espaciosDisponibles);
@@ -38,7 +42,7 @@ int main(int argc, char *argv[])
 	double tArrival = 0.0;
 
 	// Generar los eventos de llegada
-	for (size_t id = 0; id < 10; id += 1)
+	for (size_t id = 0; id < trabajosAProcesar + 1; id += 1)
 	{
 		// Log de eventos
 		std::stringstream ssEvLog;
