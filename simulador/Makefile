@@ -1,15 +1,22 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -g3 -Iinclude
-SRC = FilaGG1.cc main.cc Simulator.cc Random.cc include/checkArgs.cc
-OBJ = $(SRC:.cc=.o)
+SRC = FilaGG1.cc main.cc Simulator.cc Random.cc
+OBJ_DIR = obj
+OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.cc=.o))
 EXEC = main.exe
 ARGS = --espaciosDisponibles 4 --trabajosAProcesar 20 --slogs --elogs
 
-$(EXEC): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -o $(EXEC)
+$(EXEC): $(OBJ) checkArgs.o
+	$(CXX) $(CXXFLAGS) $(OBJ) checkArgs.o -o $(EXEC)
 
-%.o: %.cc
+$(OBJ_DIR)/%.o: %.cc | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+checkArgs.o: include/checkArgs.cc
+	$(CXX) $(CXXFLAGS) -c $<
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 run: $(EXEC)
 	@echo "Si se ejecuta $(EXEC):"
@@ -24,5 +31,4 @@ run: $(EXEC)
 	./$(EXEC) $(ARGS)
 
 clean:
-	rm -f $(OBJ) $(EXEC)
-
+	rm -rf $(OBJ_DIR) $(EXEC) checkArgs.o

@@ -35,29 +35,10 @@ public:
 			return 0.0;
 		}
 	}
+	double tiempoEntradaFila;
 
 	double tiempoInicioOcupacion;
 	double tiempoTotalOcupado;
-	void iniciarOcupacion(double currentTime)
-	{
-		if (trabajosEnEspera == 0)
-		{ // La fila estaba vacía y ahora estará ocupada
-			tiempoInicioOcupacion = currentTime;
-		}
-	}
-
-	void finalizarOcupacion(double currentTime)
-	{
-		if (trabajosEnEspera == 1)
-		{ // El último trabajo en la fila va a ser atendido
-			tiempoTotalOcupado += (currentTime - tiempoInicioOcupacion);
-		}
-	}
-
-	double getOcupacionPromedio(double tiempoFinalSimulacion) const
-	{
-		return (tiempoTotalOcupado / tiempoFinalSimulacion) * 100.0;
-	}
 };
 
 class EventSimConnector
