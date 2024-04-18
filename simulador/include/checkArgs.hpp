@@ -7,6 +7,10 @@
 extern char *optarg;
 extern int optind, opterr, optopt;
 
+// Parametros que debe recibir el programa
+// espaciosDisponibles (k)
+// cantidadDeTrabajo (j)
+
 class CheckArgs
 {
 private:
@@ -14,19 +18,18 @@ private:
 	const std::string optString = "j:r:t:seh";
 
 	const struct option optStringLong[7] = {
-		{"jobs", required_argument, nullptr, 'j'},
-		{"rate", required_argument, nullptr, 'r'},
+		{"espaciosDisponibles", required_argument, nullptr, 'k'}, // Nuevo argumento para la cantidad de espacios disponibles
+		{"cantidadDeTrabajo", required_argument, nullptr, 'j'},	  // Nuevo argumento para la cantidad de trabajo a procesar
 		{"test", required_argument, nullptr, 't'},
 		{"slogs", no_argument, nullptr, 's'},
 		{"elogs", no_argument, nullptr, 'e'},
 		{"help", no_argument, nullptr, 'h'},
 		{nullptr, no_argument, nullptr, 0}};
 
-	const std::string opciones = "--jobs <total jobs> --rate <rate> --espacios <espacios disponibles> [--test][--simlogs][--eventslogs][--help]";
+	const std::string opciones = "--espaciosDisponibles <espacios disponibles> --cantidadDeTrabajo <cantidad de trabajos> [--test][--simlogs][--eventslogs][--help]";
 	const std::string descripcion = "Descripción:\n"
-									"\t--jobs     cantidad total de trabajos a simular (integer).\n"
-									"\t--rate     tasa de llegada de trabajos (cada 'rate' unidades de tiempo llega un elemento al sistema).\n"
-									"\t--espacios número de espacios disponibles para trabajos (integer).\n"
+									"\t--espaciosDisponibles espacios disponibles en la fila.\n"
+									"\t--cantidadDeTrabajo cantidad de trabajos a procesar.\n"
 									"\t--test     genera archivo de pruebas de nros aleatorios y termina.\n"
 									"\t--slogs    habilita logs del simulador en pantalla.\n"
 									"\t--elogs    habilita logs de los eventos en pantalla.\n"
@@ -34,17 +37,12 @@ private:
 
 	typedef struct args_t
 	{
-		uint32_t totalTrabajos;
-		double tasaLlegada;
+		uint32_t espaciosDisponibles;
+		uint32_t cantidadDeTrabajo;
 		bool randomTest;
 		bool enableSimulatorLogs;
 		bool enableEventsLogs;
 	} args_t;
-
-	// 2) Modificar constructor
-	// 3) Modificar ciclo "getopt" en método checkArgs::getArgs()
-	// 4) Recuerde que para compilar nuevamente, y por tratarse
-	//    de un archivo header, debe hacer primero un make clean
 
 	args_t parametros;
 
@@ -63,8 +61,8 @@ private:
 
 CheckArgs::CheckArgs(int _argc, char **_argv)
 {
-	parametros.totalTrabajos = 0;
-	parametros.tasaLlegada = 0;
+	parametros.espaciosDisponibles = 0;
+	parametros.cantidadDeTrabajo = 0;
 	parametros.randomTest = false;
 	parametros.enableSimulatorLogs = false;
 	parametros.enableEventsLogs = false;
@@ -87,11 +85,12 @@ void CheckArgs::loadArgs()
 	{
 		switch (opcion)
 		{
-		case 'j':
-			parametros.totalTrabajos = std::atoi(optarg);
+		// Nuevo argumento para la cantidad de espacios disponibles
+		case 'k':
+			parametros.espaciosDisponibles = std::atof(optarg);
 			break;
-		case 'r':
-			parametros.tasaLlegada = std::atof(optarg);
+		case 'j':
+			parametros.cantidadDeTrabajo = std::atof(optarg);
 			break;
 		case 's':
 			parametros.enableSimulatorLogs = true;
@@ -102,10 +101,6 @@ void CheckArgs::loadArgs()
 		case 't':
 			parametros.randomTest = true;
 			break;
-		// Nuevo argumento para la cantidad de espacios disponibles
-		case 'd':
-			parametros.espaciosDisponibles = std::atoi(optarg);
-			break;
 		case 'h':
 		default:
 			printUsage();
@@ -113,7 +108,7 @@ void CheckArgs::loadArgs()
 		}
 	}
 
-	if (parametros.totalTrabajos == 0 || parametros.tasaLlegada == 0)
+	if (parametros.espaciosDisponibles == 0)
 	{
 		printUsage();
 		exit(EXIT_FAILURE);

@@ -4,9 +4,9 @@
  *
  **********************************************************************************************/
 
-#include <FilaGG1.hh>
-#include <Random.hh>
-#include <checkArgs.hpp>
+#include "FilaGG1.hh"
+#include "Random.hh"
+#include "include/checkArgs.hpp"
 
 // Variables globales estaticas
 FilaGG1 *EventSimConnector::theSim;
@@ -50,8 +50,6 @@ int main(int argc, char *argv[])
 
 	// Obtener los argumentos de la simulación
 
-	// Tasa de llegada
-	double rate = args.getArgs().tasaLlegada;
 	// espaciosDisponibles
 	uint32_t espaciosDisponibles = args.getArgs().espaciosDisponibles;
 
@@ -59,14 +57,14 @@ int main(int argc, char *argv[])
 	double tArrival = 0.0;
 
 	// Generar los eventos de llegada
-	for (size_t id = 0; id < args.getArgs().totalTrabajos; id += 1)
+	for (size_t id = 0; id < args.getArgs().cantidadDeTrabajo; id += 1)
 	{
 		// Log de eventos
 		std::stringstream ssEvLog;
 
 		// Generar el tiempo de llegada
 		double tBetweenArrivals;
-		tBetweenArrivals = Random::exponential(rate);
+		double tBetweenArrivals = Random::normal_truncated(5, 2, 0, 15);
 
 		// Calcular el tiempo de llegada
 		tArrival += tBetweenArrivals;
