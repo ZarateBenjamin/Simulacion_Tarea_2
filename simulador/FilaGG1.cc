@@ -14,6 +14,9 @@ FilaGG1::FilaGG1(int espaciosDisponibles) : Simulator()
 	totalTrabajosAtendidos = 0;
 
 	tiempoEntradaFila = time;
+
+	tiempoInicioOcupacion = 0;
+	tiempoTotalOcupado = 0;
 }
 
 // evento de inicio de la simulación
@@ -31,6 +34,7 @@ void Llegada::processEvent()
 	if (theSim->servidorLibre)
 	{
 		theSim->servidorLibre = false;
+		theSim->tiempoInicioOcupacion = time;
 
 		ssEvLog << "==> pasa al servidor.\n";
 
@@ -107,6 +111,9 @@ void Salir::processEvent()
 	std::stringstream ssEvLog;
 
 	theSim->servidorLibre = true;
+	double periodoOcupacion = time - theSim->tiempoInicioOcupacion;
+	theSim->tiempoTotalOcupado += periodoOcupacion;
+
 	theSim->totalAtendidos++;
 	theSim->espaciosDisponibles++;
 

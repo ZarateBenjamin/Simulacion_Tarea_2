@@ -82,13 +82,18 @@ int main(int argc, char *argv[])
 
 	double tiempoFinalSimulacion = GG1Sim->time;
 
+	// Calcular tiempo de ocupación
+	double tiempoOcupacion = GG1Sim->tiempoTotalOcupado;
+	double tiempoSimulacion = GG1Sim->time;
+	double ocupacionPromedio = tiempoOcupacion / tiempoSimulacion;
+
 	double promedioAtendidos = static_cast<double>(totalAtendidos) / tiempoFinalSimulacion;
 	double promedioAbandonos = static_cast<double>(totalAbandonos) / tiempoFinalSimulacion;
 
 	std::cout << "Capacidad de la fila: " << espaciosDisponibles << std::endl;
 	std::cout << "Promedio entre llegadas: " << tiempoPromedioEntreLlegadas << std::endl;
 	std::cout << "Promedio de tiempo de atencion: " << promedioTiempoDeAtencion << std::endl;
-	std::cout << "Ocupacion promedio de la fila: " << std::endl;
+	std::cout << "Ocupacion promedio de la fila: " << ocupacionPromedio << std::endl;
 	std::cout << "Total de atendidos: " << totalAtendidos << std::endl;
 	std::cout << "Total de abandonos: " << totalAbandonos << std::endl;
 	std::cout << "Promedio de atendidos: " << promedioAtendidos << std::endl;

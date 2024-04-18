@@ -36,6 +36,9 @@ public:
 		}
 	}
 	double tiempoEntradaFila;
+
+	double tiempoInicioOcupacion;
+	double tiempoTotalOcupado;
 };
 
 class EventSimConnector
