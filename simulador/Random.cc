@@ -1,12 +1,15 @@
 #include "Random.hh"
 
+// Genera un número aleatorio que sigue una distribución exponencial
 double Random::exponential(double rate)
 {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::exponential_distribution<double> expoDistro(1.0 / rate);
+	// Motor de generación de números aleatorios
+	std::random_device rd;	// Dispositivo para obtener una semilla
+	std::mt19937 gen(rd()); // Motor Mersenne Twister
 
-	return (expoDistro(gen));
+	std::exponential_distribution<> dist(1 / rate);
+
+	return (dist(gen));
 }
 
 double Random::normal(double mean, double std)
@@ -29,7 +32,7 @@ double Random::normal_truncated(double mu, double sigma, double lower_bound, dou
 	do
 	{
 		number = dist(gen);
-	} while (number <= lower_bound || number > upper_bound);
+	} while (number < lower_bound || number >= upper_bound);
 	return number;
 }
 

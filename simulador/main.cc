@@ -41,14 +41,18 @@ int main(int argc, char *argv[])
 	// Tiempo de llegada
 	double tArrival = 0.0;
 
+	// Tiempo total entre llegadas
+	double tiempoTotalEntreLlegadas = 0.0;
+
 	// Generar los eventos de llegada
-	for (size_t id = 0; id < trabajosAProcesar + 1; id += 1)
+	for (size_t id = 0; id < trabajosAProcesar; id += 1)
 	{
 		// Log de eventos
 		std::stringstream ssEvLog;
 
 		// Generar el tiempo de llegada
-		double tBetweenArrivals = Random::normal_truncated(5, 2, 0, 15);
+		double tBetweenArrivals = Random::normal_truncated(5.0, 2.0, 0, 15.0);
+		tiempoTotalEntreLlegadas += tBetweenArrivals; // Acumular el tiempo entre llegadas
 
 		// Calcular el tiempo de llegada
 		tArrival += tBetweenArrivals;
@@ -68,6 +72,25 @@ int main(int argc, char *argv[])
 
 	// Ejecutar la simulación
 	GG1Sim->run();
+
+	// Al finalizar el bucle, calcular el tiempo promedio entre llegadas
+	double tiempoPromedioEntreLlegadas = tiempoTotalEntreLlegadas / trabajosAProcesar;
+
+	int totalAtendidos = GG1Sim->getTotalAtendidos();
+	int totalAbandonos = GG1Sim->getTotalAbandonos();
+	int promedioTiempoDeAtencion = GG1Sim->getTiempoPromedioDeAtencion();
+
+	double tiempoFinalSimulacion = tArrival;
+	double ocupaPromedio = GG1Sim->getOcupacionPromedio(tiempoFinalSimulacion);
+
+	std::cout << "Capacidad de la fila: " << espaciosDisponibles << std::endl;
+	std::cout << "Promedio entre llegadas: " << tiempoPromedioEntreLlegadas << std::endl;
+	std::cout << "Promedio de tiempo de atencion: " << promedioTiempoDeAtencion << std::endl;
+	std::cout << "Ocupacion promedio de la fila: " << ocupaPromedio << std::endl;
+	std::cout << "Total de atendidos: " << totalAtendidos << std::endl;
+	std::cout << "Total de abandonos: " << totalAbandonos << std::endl;
+	std::cout << "Promedio de atendidos: " << std::endl;
+	std::cout << "Promedio de abandonos: " << std::endl;
 
 	// Imprimir un mensaje en la consola
 	std::cout << "Simulador ejecutado correctamente" << std::endl;

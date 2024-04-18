@@ -49,6 +49,7 @@ public:
 	void run();
 
 	void scheduleEvent(Event *newEvent);
+	void removeEvent(uint32_t eventId);
 	void rescheduleDelayedEvents();
 
 	void log(std::stringstream &oss);

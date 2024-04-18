@@ -9,6 +9,12 @@ FilaGG1::FilaGG1(int espaciosDisponibles) : Simulator()
 	trabajosEnEspera = 0;
 	totalAbandonos = 0;
 	totalAtendidos = 0;
+
+	tiempoTotalDeAtencion = 0;
+	totalTrabajosAtendidos = 0;
+
+	tiempoInicioOcupacion = 0;
+	tiempoTotalOcupado = 0;
 }
 
 // evento de inicio de la simulación
@@ -17,11 +23,11 @@ void Llegada::processEvent()
 
 	std::stringstream ssEvLog;
 
-	ssEvLog << "==> llega  a la fila.\n";
+	ssEvLog
+		<< "==> llega  a la fila, espacios restantes:"
+		<< theSim->espaciosDisponibles << std::endl;
 	this->log(ssEvLog);
-
-	theSim->trabajosEnEspera++;
-	theSim->espaciosDisponibles--;
+	theSim->iniciarOcupacion(time);
 
 	// Si el servidor está libre, el trabajo pasa directamente al servidor
 	if (theSim->servidorLibre)
@@ -29,6 +35,7 @@ void Llegada::processEvent()
 		theSim->servidorLibre = false;
 
 		ssEvLog << "==> pasa al servidor.\n";
+
 		this->log(ssEvLog);
 
 		Event *ev = new OcuparServidor(time, id);
@@ -38,17 +45,22 @@ void Llegada::processEvent()
 	// Si el servidor está ocupado, se debe re-planificar el evento de llegada
 	else
 	{
-		// El evento de llegada debe ser re-planificado.
-		// el nuevo tiempo es 'newTime'
 
 		if (theSim->espaciosDisponibles <= 0)
 		{
-			theSim->espaciosDisponibles = 0;
-			theSim->totalAbandonos++;
-			theSim->trabajosEnEspera--;
-			ssEvLog << "==> abandona la fila.\n";
-			this->log(ssEvLog);
+
+			theSim->scheduleEvent(new Abandono(time, id));
 		}
+		// Verificar si espaciosDisponibles es mayor que 0 antes de disminuir su valor
+		if (theSim->espaciosDisponibles > 0)
+		{
+			theSim->espaciosDisponibles--;
+		}
+
+		// El evento de llegada debe ser re-planificado.
+		// el nuevo tiempo es 'newTime'
+
+		theSim->trabajosEnEspera++;
 
 		// determinar el tiempo de postergación
 		double newTime;
@@ -78,11 +90,16 @@ void OcuparServidor::processEvent()
 	theSim->trabajosEnEspera--;
 
 	// Tiempo de servicio del trabajo actual
-	uint32_t Tservicio = Random::exponential(2.0);
+	double Tservicio = Random::exponential(200); // una media de 2 minutos (1/0.5)
+
+	// Acumular tiempo de atención
+	theSim->tiempoTotalDeAtencion += Tservicio;
+	theSim->totalTrabajosAtendidos++;
 
 	ssEvLog << "==> empieza a ocupar servidor. Tiempo de servicio:" << Tservicio << "\n";
 	this->log(ssEvLog);
 
+	theSim->finalizarOcupacion(time);
 	theSim->scheduleEvent(new Salir(time + Tservicio, id));
 }
 
@@ -99,4 +116,15 @@ void Salir::processEvent()
 
 	// Debe replanificar los eventos que fueron pospuestos
 	theSim->rescheduleDelayedEvents();
+}
+
+// Evento salida abandono
+void Abandono::processEvent()
+{
+	std::stringstream ssEvLog;
+
+	theSim->totalAbandonos++;
+	ssEvLog << "==> abandona la fila.\n";
+	this->log(ssEvLog);
+	theSim->removeEvent(id);
 }

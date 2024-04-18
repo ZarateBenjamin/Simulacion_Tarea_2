@@ -101,3 +101,33 @@ void Simulator::log(std::stringstream &oss)
 
 	oss.str("");
 }
+
+void Simulator::removeEvent(uint32_t eventId)
+{
+	std::priority_queue<Event *, std::vector<Event *>, EventComparator> tempQueue;
+	bool eventRemoved = false;
+
+	while (!eventQueue.empty())
+	{
+		Event *currentEvent = eventQueue.top();
+		eventQueue.pop();
+		if (currentEvent->id == eventId)
+		{
+			delete currentEvent; // Elimina el evento
+			eventRemoved = true;
+		}
+		else
+		{
+			tempQueue.push(currentEvent); // Guarda los demás eventos
+		}
+	}
+
+	eventQueue = tempQueue; // Restablece la cola con los eventos restantes
+
+	if (eventRemoved && enableLog)
+	{
+		std::stringstream ss;
+		ss << "Evento con ID=" << eventId << " ha sido eliminado." << std::endl;
+		log(ss);
+	}
+}
