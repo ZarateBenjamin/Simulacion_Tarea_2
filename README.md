@@ -10,5 +10,4 @@
 • Promedio de abandonos
 
 Comando de ejecucion:
-g++ -Wall -Wextra -g3 -Iinclude FilaGG1.cc main.cc Simulator.cc Random.cc include/checkArgs.cc 
--o main.exe
+g++ -Wall -Wextra -g3 -Iinclude FilaGG1.cc main.cc Simulator.cc Random.cc include/checkArgs.cc -o main.exe

@@ -18,15 +18,14 @@ int main(int argc, char *argv[])
 		Random::test(10000 /*cantidad de nros*/, "randomTest.txt" /*archivo de salida*/, true /*salir al terminar*/);
 	}
 
-	// Contador de la fila
-	std::cout << "Fila de atención simple\n";
-
 	// Habilitar logs
 	Simulator::enableLog = args.getArgs().enableSimulatorLogs;
 	Event::enableLog = args.getArgs().enableEventsLogs;
 
+	uint32_t espaciosDisponibles = args.getArgs().espaciosDisponibles;
+
 	// Crear la simulación
-	FilaGG1 *GG1Sim = new FilaGG1(argc, argv);
+	FilaGG1 *GG1Sim = new FilaGG1(espaciosDisponibles);
 	EventSimConnector::theSim = GG1Sim;
 
 	// Tiempo de simulación
@@ -39,7 +38,7 @@ int main(int argc, char *argv[])
 	double tArrival = 0.0;
 
 	// Generar los eventos de llegada
-	for (size_t id = 0; id < 1000; id += 1)
+	for (size_t id = 0; id < 10; id += 1)
 	{
 		// Log de eventos
 		std::stringstream ssEvLog;
@@ -65,6 +64,9 @@ int main(int argc, char *argv[])
 
 	// Ejecutar la simulación
 	GG1Sim->run();
+
+	// Imprimir un mensaje en la consola
+	std::cout << "Simulador ejecutado correctamente" << std::endl;
 
 	delete GG1Sim;
 

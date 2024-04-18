@@ -2,7 +2,6 @@
 
 #include "Simulator.hh"
 #include "Random.hh"
-#include "include/checkArgs.hh"
 
 class FilaGG1 : public Simulator
 {
@@ -17,7 +16,7 @@ public:
 
 	// espaciosDisponibles
 	uint32_t espaciosDisponibles;
-	FilaGG1(int argc, char *argv[]);
+	FilaGG1(int espaciosDisponibles);
 };
 
 class EventSimConnector

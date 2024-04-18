@@ -10,7 +10,7 @@ CheckArgs::CheckArgs(int _argc, char **_argv) : argc(_argc), argv(_argv), optStr
 
     static const struct option opts[] = {
         {"espaciosDisponibles", required_argument, nullptr, 'k'},
-        {"test", required_argument, nullptr, 't'},
+        {"test", no_argument, nullptr, 't'},
         {"slogs", no_argument, nullptr, 's'},
         {"elogs", no_argument, nullptr, 'e'},
         {"help", no_argument, nullptr, 'h'},

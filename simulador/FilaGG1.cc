@@ -2,15 +2,13 @@
 #include "include/checkArgs.hh"
 
 // Implementación del constructor
-FilaGG1::FilaGG1(int argc, char *argv[]) : Simulator()
+FilaGG1::FilaGG1(int espaciosDisponibles) : Simulator()
 {
-	// Procesar argumentos
-	CheckArgs args(argc, argv);
+	this->espaciosDisponibles = espaciosDisponibles;
 	servidorLibre = true;
 	trabajosEnEspera = 0;
 	totalAbandonos = 0;
 	totalAtendidos = 0;
-	espaciosDisponibles = args.getArgs().espaciosDisponibles;
 }
 
 // evento de inicio de la simulación
@@ -80,7 +78,7 @@ void OcuparServidor::processEvent()
 	theSim->trabajosEnEspera--;
 
 	// Tiempo de servicio del trabajo actual
-	uint32_t Tservicio = Random::exponential(2);
+	uint32_t Tservicio = Random::exponential(2.0);
 
 	ssEvLog << "==> empieza a ocupar servidor. Tiempo de servicio:" << Tservicio << "\n";
 	this->log(ssEvLog);
