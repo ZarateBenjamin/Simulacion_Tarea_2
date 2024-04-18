@@ -16,7 +16,7 @@ class Simulator;
 class Event
 {
 public:
-	// Construct sets time of event.
+		// Construct sets time of event.
 	Event(double t);
 	Event(double t, uint32_t id);
 

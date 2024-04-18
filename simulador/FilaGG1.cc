@@ -13,8 +13,7 @@ FilaGG1::FilaGG1(int espaciosDisponibles) : Simulator()
 	tiempoTotalDeAtencion = 0;
 	totalTrabajosAtendidos = 0;
 
-	tiempoInicioOcupacion = 0;
-	tiempoTotalOcupado = 0;
+	tiempoEntradaFila = time;
 }
 
 // evento de inicio de la simulación
@@ -27,7 +26,6 @@ void Llegada::processEvent()
 		<< "==> llega  a la fila, espacios restantes:"
 		<< theSim->espaciosDisponibles << std::endl;
 	this->log(ssEvLog);
-	theSim->iniciarOcupacion(time);
 
 	// Si el servidor está libre, el trabajo pasa directamente al servidor
 	if (theSim->servidorLibre)
@@ -89,6 +87,8 @@ void OcuparServidor::processEvent()
 	theSim->servidorLibre = false;
 	theSim->trabajosEnEspera--;
 
+	theSim->tiempoEntradaFila += time - theSim->tiempoEntradaFila;
+
 	// Tiempo de servicio del trabajo actual
 	double Tservicio = Random::exponential(200); // una media de 2 minutos (1/0.5)
 
@@ -99,7 +99,6 @@ void OcuparServidor::processEvent()
 	ssEvLog << "==> empieza a ocupar servidor. Tiempo de servicio:" << Tservicio << "\n";
 	this->log(ssEvLog);
 
-	theSim->finalizarOcupacion(time);
 	theSim->scheduleEvent(new Salir(time + Tservicio, id));
 }
 

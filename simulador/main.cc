@@ -80,17 +80,19 @@ int main(int argc, char *argv[])
 	int totalAbandonos = GG1Sim->getTotalAbandonos();
 	int promedioTiempoDeAtencion = GG1Sim->getTiempoPromedioDeAtencion();
 
-	double tiempoFinalSimulacion = tArrival;
-	double ocupaPromedio = GG1Sim->getOcupacionPromedio(tiempoFinalSimulacion);
+	double tiempoFinalSimulacion = GG1Sim->time;
+
+	double promedioAtendidos = static_cast<double>(totalAtendidos) / tiempoFinalSimulacion;
+	double promedioAbandonos = static_cast<double>(totalAbandonos) / tiempoFinalSimulacion;
 
 	std::cout << "Capacidad de la fila: " << espaciosDisponibles << std::endl;
 	std::cout << "Promedio entre llegadas: " << tiempoPromedioEntreLlegadas << std::endl;
 	std::cout << "Promedio de tiempo de atencion: " << promedioTiempoDeAtencion << std::endl;
-	std::cout << "Ocupacion promedio de la fila: " << ocupaPromedio << std::endl;
+	std::cout << "Ocupacion promedio de la fila: " << std::endl;
 	std::cout << "Total de atendidos: " << totalAtendidos << std::endl;
 	std::cout << "Total de abandonos: " << totalAbandonos << std::endl;
-	std::cout << "Promedio de atendidos: " << std::endl;
-	std::cout << "Promedio de abandonos: " << std::endl;
+	std::cout << "Promedio de atendidos: " << promedioAtendidos << std::endl;
+	std::cout << "Promedio de abandonos: " << promedioAbandonos << std::endl;
 
 	// Imprimir un mensaje en la consola
 	std::cout << "Simulador ejecutado correctamente" << std::endl;
