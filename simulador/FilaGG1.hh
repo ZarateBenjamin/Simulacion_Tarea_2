@@ -2,7 +2,7 @@
 
 #include "Simulator.hh"
 #include "Random.hh"
-#include "include/checkArgs.hpp"
+#include "include/checkArgs.hh"
 
 class FilaGG1 : public Simulator
 {

@@ -1,5 +1,5 @@
 #include "FilaGG1.hh"
-#include "include/checkArgs.hpp"
+#include "include/checkArgs.hh"
 
 // Implementación del constructor
 FilaGG1::FilaGG1(int argc, char *argv[]) : Simulator()

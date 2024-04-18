@@ -1,6 +1,6 @@
 #include "FilaGG1.hh"
 #include "Random.hh"
-#include "include/checkArgs.hpp"
+#include "include/checkArgs.hh"
 
 // Variables globales estaticas
 FilaGG1 *EventSimConnector::theSim;

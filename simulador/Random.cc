@@ -19,7 +19,7 @@ double Random::normal(double mean, double std)
 }
 
 // Tiempo aleatorio truncado entre llegadas
-double normal_truncated(double mu, double sigma, double lower_bound, double upper_bound)
+double Random::normal_truncated(double mu, double sigma, double lower_bound, double upper_bound)
 {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());
